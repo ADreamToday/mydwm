@@ -70,10 +70,15 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *rofi[]     = { "rofi" , "-show" , "combi" , NULL };
 static const char *brightnessdown[] = { "brightnessctl" , "-" , NULL};
 static const char *brightnessup[] ={ "brightnessctl" , "+"  , NULL};
-
+static const char *volumeup[] = { "volumectl" , "+" , "2" , NULL};
+static const char *volumedown[] = { "volumectl" , "-" , "2" , NULL};
+static const char *volumemute[] = {"volumectl" , "-" , "100" , NULL};
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
+	/* modifier                     key        function        argument */	
+	{ 0,                            XF86XK_AudioMute, spawn , {.v = volumemute} },
+	{ 0,                            XF86XK_AudioLowerVolume, spawn , {.v = volumedown} },
+	{ 0,                            XF86XK_AudioRaiseVolume, spawn , {.v = volumeup} },
 	{ 0,                            XF86XK_MonBrightnessUp, spawn , {.v = brightnessup } },
 	{ 0,                            XF86XK_MonBrightnessDown, spawn , {.v = brightnessdown } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = rofi } },

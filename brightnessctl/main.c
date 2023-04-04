@@ -23,6 +23,11 @@ int main(int argc , char **argv)
 			res = readBrightness()*100 / readMaxBrightness();
 			printf("%d\n" , res);
 		}
+		else if (strcmp(argv[1] , "-slstatus") == 0)
+		{
+			res = readBrightness()*100 / readMaxBrightness();
+			printf("󰖨  %3d\n" , res);
+		}
 		else if (strcmp(argv[1] , "-") == 0 || strcmp(argv[1] , "+") == 0)
 		{
 
