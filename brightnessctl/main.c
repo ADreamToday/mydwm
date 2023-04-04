@@ -11,14 +11,39 @@ int readBrightness();
 
 int main(int argc , char **argv)
 {
+
+	int maxlight = readMaxBrightness();
+	int nowlight = readBrightness();
+	double perc = ((double)nowlight) / ((double)maxlight);
 	if (argc != 1)
 	{
 		int res = 0;
 		if (strcmp(argv[1] , "-value") == 0)
 		{
 			res = readBrightness()*100 / readMaxBrightness();
+			printf("%d\n" , res);
 		}
-		printf("%d\n" , res);
+		else if (strcmp(argv[1] , "-") == 0 || strcmp(argv[1] , "+") == 0)
+		{
+
+			if (strcmp(argv[1] , "-") == 0)
+			{
+				perc = perc - 0.05;
+				if (perc < 1e-3)
+				{
+					perc = 0.00;
+				}
+			}
+			else
+			{
+				perc = perc + 0.05;
+				if (perc > 1.00)
+				{
+					perc = 1.00;
+				}
+			}
+			writeBrightness(perc , maxlight);
+		}
 		return res;
 	}
 	
@@ -26,6 +51,7 @@ int main(int argc , char **argv)
 	noecho();
 	curs_set(0);
 	cbreak();
+	timeout(500);
 	keypad(stdscr , true);
 	WINDOW *win;
 	int xMax , yMax;
@@ -36,9 +62,6 @@ int main(int argc , char **argv)
 	wrefresh(win);
 	keypad(win , true);
 
-	int maxlight = readMaxBrightness();
-	int nowlight = readBrightness();
-	double perc = ((double)nowlight) / ((double)maxlight);
 	mvwprintw(win , 1 , (xMax / 2) - (strlen("MaxLight:%5d , Now:%5d , percentage:%3.lf%%")/2) , "MaxLight:%5d , Now:%5d , percentage:%3.lf%%" , maxlight , nowlight , perc*100);
 	wrefresh(win);
 
@@ -67,6 +90,7 @@ int main(int argc , char **argv)
 		
 		maxlight = readMaxBrightness();
 		nowlight = readBrightness();
+		perc = ((double)nowlight) / ((double)maxlight);
 		mvwprintw(win , 1 , (xMax / 2) - (strlen("MaxLight:%5d , Now:%5d , percentage:%3.lf%%")/2) , "MaxLight:%5d , Now:%5d , percentage:%3.lf%%" , maxlight , nowlight , perc*100);
 		wrefresh(win);
 
